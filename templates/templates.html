@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Financial Information</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 10px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-title {
+            font-weight: bold;
+            color: #343a40;
+        }
+        .text-info {
+            color: #495057;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .small-chart-container {
+            position: relative;
+            height: 200px;
+            width: 100%;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Financial Information for {{ user_data['name'] }}</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Bank Information</h5>
+                <p class="text-info">Bank: {{ user_data['bank_name'] }}</p>
+                <p class="text-info">Amount: ${{ user_data['bank_amount'] }}</p>
+                <div class="small-chart-container">
+                    <canvas id="bankChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Real Estate Investment</h5>
+                <p class="text-info">Amount: ${{ user_data['real_estate'] }}</p>
+                <div class="small-chart-container">
+                    <canvas id="realEstateChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Stock Investment</h5>
+                <p class="text-info">Amount: ${{ user_data['stocks'] }}</p>
+                <div class="small-chart-container">
+                    <canvas id="stocksChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Overall Financial Distribution</h5>
+                <p class="text-info">This chart shows the overall distribution of the user's financial assets across bank balance, real estate, and stocks.</p>
+                <div class="chart-container">
+                    <canvas id="overallChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Financial Overview</h5>
+                <p class="text-info">This chart provides a bar and line chart overview of the user's financial assets.</p>
+                <div class="chart-container">
+                    <canvas id="financialOverviewChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bankData = {
+                labels: ['Bank Amount'],
+                datasets: [{
+                    data: [ user_data['bank_amount'] ],
+                    backgroundColor: ['#007bff']
+                }]
+            };
+
+            const realEstateData = {
+                labels: ['Real Estate'],
+                datasets: [{
+                    data: [ user_data['real_estate'] ],
+                    backgroundColor: ['#28a745']
+                }]
+            };
+
+            const stocksData = {
+                labels: ['Stocks'],
+                datasets: [{
+                    data: [user_data['stocks'] ],
+                    backgroundColor: ['#ffc107']
+                }]
+            };
+
+            const overallData = {
+                labels: ['Bank Amount', 'Real Estate', 'Stocks'],
+                datasets: [{
+                    data: [ user_data['bank_amount'] ,  user_data['real_estate'] , user_data['stocks'] ],
+                    backgroundColor: ['#007bff', '#28a745', '#ffc107']
+                }]
+            };
+
+            const financialOverviewData = {
+                labels: ['Bank Amount', 'Real Estate', 'Stocks'],
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'Amount',
+                        data: [ user_data['bank_amount'] ,  user_data['real_estate'] ,  user_data['stocks'] ],
+                        backgroundColor: ['#007bff', '#28a745', '#ffc107']
+                    },
+                    {
+                        type: 'line',
+                        label: 'Amount',
+                        data: [user_data['bank_amount'] ,  user_data['real_estate'] ,  user_data['stocks'] ],
+                        borderColor: '#343a40',
+                        fill: false
+                    }
+                ]
+            };
+
+            const bankCtx = document.getElementById('bankChart').getContext('2d');
+            new Chart(bankCtx, {
+                type: 'pie',
+                data: bankData
+            });
+
+            const realEstateCtx = document.getElementById('realEstateChart').getContext('2d');
+            new Chart(realEstateCtx, {
+                type: 'pie',
+                data: realEstateData
+            });
+
+            const stocksCtx = document.getElementById('stocksChart').getContext('2d');
+            new Chart(stocksCtx, {
+                type: 'pie',
+                data: stocksData
+            });
+
+            const overallCtx = document.getElementById('overallChart').getContext('2d');
+            new Chart(overallCtx, {
+                type: 'doughnut',
+                data: overallData
+            });
+
+            const financialOverviewCtx = document.getElementById('financialOverviewChart').getContext('2d');
+            new Chart(financialOverviewCtx, {
+                data: financialOverviewData
+            });
+        });
+    </script>
+</body>
+</html>
