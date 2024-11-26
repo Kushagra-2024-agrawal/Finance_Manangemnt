@@ -101,11 +101,14 @@
         </div>
     </div>
     <script>
+        // Example of passing user_data from backend to frontend
+        const user_data = {{ user_data | tojson }};
+
         document.addEventListener('DOMContentLoaded', function() {
             const bankData = {
                 labels: ['Bank Amount'],
                 datasets: [{
-                    data: [ user_data['bank_amount'] ],
+                    data: [ user_data.bank_amount ],
                     backgroundColor: ['#007bff']
                 }]
             };
@@ -113,7 +116,7 @@
             const realEstateData = {
                 labels: ['Real Estate'],
                 datasets: [{
-                    data: [ user_data['real_estate'] ],
+                    data: [ user_data.real_estate ],
                     backgroundColor: ['#28a745']
                 }]
             };
@@ -121,7 +124,7 @@
             const stocksData = {
                 labels: ['Stocks'],
                 datasets: [{
-                    data: [user_data['stocks'] ],
+                    data: [ user_data.stocks ],
                     backgroundColor: ['#ffc107']
                 }]
             };
@@ -129,7 +132,7 @@
             const overallData = {
                 labels: ['Bank Amount', 'Real Estate', 'Stocks'],
                 datasets: [{
-                    data: [ user_data['bank_amount'] ,  user_data['real_estate'] , user_data['stocks'] ],
+                    data: [ user_data.bank_amount ,  user_data.real_estate , user_data.stocks ],
                     backgroundColor: ['#007bff', '#28a745', '#ffc107']
                 }]
             };
@@ -140,13 +143,13 @@
                     {
                         type: 'bar',
                         label: 'Amount',
-                        data: [ user_data['bank_amount'] ,  user_data['real_estate'] ,  user_data['stocks'] ],
+                        data: [ user_data.bank_amount ,  user_data.real_estate ,  user_data.stocks ],
                         backgroundColor: ['#007bff', '#28a745', '#ffc107']
                     },
                     {
                         type: 'line',
                         label: 'Amount',
-                        data: [user_data['bank_amount'] ,  user_data['real_estate'] ,  user_data['stocks'] ],
+                        data: [ user_data.bank_amount ,  user_data.real_estate ,  user_data.stocks ],
                         borderColor: '#343a40',
                         fill: false
                     }
